@@ -1,5 +1,69 @@
+[project]
+name = 'ci_watson'
+description = 'CI helper for STScI Jenkins'
+readme = 'README.md'
+requires-python = '>=3.5'
+license = { file = 'LICENSE' }
+authors = [{ name = 'STScI', email = 'help@stsci.edu' }]
+classifiers = [
+    'Framework :: Pytest',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Topic :: Software Development :: Testing',
+    'Topic :: Software Development :: Libraries :: Python Module',
+]
+dependencies = [
+    'pytest >=3',
+    'requests',
+    'crds',
+]
+dynamic = ['version']
+
+[project.optional-dependencies]
+all = [
+    'astropy',
+]
+test = [
+    'astropy',
+    'pytest-astropy-header',
+]
+docs = [
+    'numpydoc',
+    'sphinx_rtd_theme',
+    'sphinx-automodapi',
+]
+
+[project.urls]
+'repository' = 'https://github.com/spacetelescope/ci_watson'
+
+[project.entry-points]
+pytest11 = { pytest_ciwatson = 'ci_watson.plugin' }
+
 [build-system]
-requires = ["setuptools",
-            "setuptools_scm",
-            "wheel"]
+requires = [
+    'setuptools',
+    'setuptools_scm',
+    'wheel',
+]
 build-backend = 'setuptools.build_meta'
+
+[tool.setuptools_scm]
+write_to = 'ci_watson/version.py'
+
+[tool.setuptools]
+zip-safe = false
+
+[tool.setuptools.packages.find]
+exclude = ['tests']
+
+[tool.pytest.ini_options]
+minversion = 3
+testpaths = ['tests']
+astropy_header = true
+xfail_strict = true
+inputs_root = 'ci-watson'
+junit_family = 'xunit2'
+filterwarnings = ['ignore:numpy.ndarray size changed:RuntimeWarning']
